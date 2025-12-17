@@ -2202,7 +2202,7 @@
       // Initialize detail map for results page
       const detailMap = L.map('detailMap', {
         center: [3.8506, 108.3844], // Center on Bunguran Timur
-        zoom: 12,
+        zoom: 13,
         zoomControl: true
       });
 
@@ -2213,29 +2213,135 @@
         tileSize: 256
       }).addTo(detailMap);
 
-      // Add marker for the specific location
-      const detailIcon = L.divIcon({
-        className: 'custom-marker',
-        html: `<div style="background: #F36A1D; width: 32px; height: 32px; border-radius: 50%; border: 4px solid white; box-shadow: 0 3px 12px rgba(0,0,0,0.4);"></div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
-      });
+      // Define potential area polygon (realistic shape)
+      const potentialArea = [
+        [3.8606, 108.3744],
+        [3.8656, 108.3894],
+        [3.8556, 108.3994],
+        [3.8406, 108.3944],
+        [3.8356, 108.3794],
+        [3.8456, 108.3694],
+        [3.8606, 108.3744]
+      ];
 
-      L.marker([3.8506, 108.3844], { icon: detailIcon })
-        .bindPopup(`<div style="color: #191919; font-family: 'Plus Jakarta Sans'; padding: 8px;">
-          <strong style="font-size: 14px;">Kec. Bunguran Timur</strong><br/>
-          <span style="font-size: 12px; color: #666;">Skor Kesesuaian: <span style="color: #198038; font-weight: 600;">87.5</span></span><br/>
-          <span style="font-size: 11px; color: #999;">3°51'N, 108°23'E</span>
-        </div>`)
-        .addTo(detailMap);
-
-      // Add circle to show potential area
-      L.circle([3.8506, 108.3844], {
+      // Add potential area polygon
+      const areaPolygon = L.polygon(potentialArea, {
         color: '#F36A1D',
         fillColor: '#F36A1D',
-        fillOpacity: 0.2,
-        radius: 2000
+        fillOpacity: 0.15,
+        weight: 2,
+        dashArray: '5, 10'
       }).addTo(detailMap);
+
+      // Add district boundary (larger area)
+      const districtBoundary = [
+        [3.8806, 108.3544],
+        [3.8906, 108.4094],
+        [3.8406, 108.4244],
+        [3.8106, 108.4044],
+        [3.8056, 108.3594],
+        [3.8306, 108.3444],
+        [3.8806, 108.3544]
+      ];
+
+      L.polygon(districtBoundary, {
+        color: '#777574',
+        fillColor: 'transparent',
+        weight: 2,
+        dashArray: '10, 5',
+        opacity: 0.6
+      }).addTo(detailMap);
+
+      // Add grid connection lines
+      const gridLines = [
+        [[3.8506, 108.3844], [3.8406, 108.3644]],
+        [[3.8506, 108.3844], [3.8706, 108.3744]],
+        [[3.8506, 108.3844], [3.8606, 108.4044]]
+      ];
+
+      gridLines.forEach(line => {
+        L.polyline(line, {
+          color: '#f1c21b',
+          weight: 2,
+          opacity: 0.7,
+          dashArray: '5, 5'
+        }).addTo(detailMap);
+      });
+
+      // Add grid substations
+      const gridPoints = [
+        [3.8406, 108.3644],
+        [3.8706, 108.3744],
+        [3.8606, 108.4044]
+      ];
+
+      gridPoints.forEach(point => {
+        const gridIcon = L.divIcon({
+          className: 'grid-marker',
+          html: `<div style="background: #f1c21b; width: 12px; height: 12px; border-radius: 3px; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.3);"></div>`,
+          iconSize: [12, 12],
+          iconAnchor: [6, 6]
+        });
+
+        L.marker(point, { icon: gridIcon })
+          .bindPopup(`<div style="color: #191919; font-family: 'Plus Jakarta Sans'; font-size: 11px; padding: 4px;">
+            <strong>Gardu Listrik</strong>
+          </div>`)
+          .addTo(detailMap);
+      });
+
+      // Add main marker with custom icon
+      const detailIcon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="position: relative;">
+          <div style="background: linear-gradient(135deg, #F36A1D, #CD541B); width: 40px; height: 40px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 12px rgba(243, 106, 29, 0.5); display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+              <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+          </div>
+          <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #F36A1D;"></div>
+        </div>`,
+        iconSize: [40, 48],
+        iconAnchor: [20, 48],
+        popupAnchor: [0, -48]
+      });
+
+      const mainMarker = L.marker([3.8506, 108.3844], { icon: detailIcon })
+        .bindPopup(`<div style="color: #191919; font-family: 'Plus Jakarta Sans'; padding: 12px; min-width: 200px;">
+          <div style="font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #F36A1D;">Kec. Bunguran Timur</div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Kabupaten Natuna, Kepulauan Riau</div>
+          <div style="border-top: 1px solid #E2E1DF; padding-top: 8px; margin-top: 8px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+              <div>
+                <div style="color: #999; margin-bottom: 2px;">Skor Kesesuaian</div>
+                <div style="color: #198038; font-weight: 700; font-size: 16px;">87.5</div>
+              </div>
+              <div>
+                <div style="color: #999; margin-bottom: 2px;">GHI</div>
+                <div style="color: #191919; font-weight: 600;">1,892 kWh/m²</div>
+              </div>
+              <div>
+                <div style="color: #999; margin-bottom: 2px;">Luas Potensial</div>
+                <div style="color: #191919; font-weight: 600;">245 Ha</div>
+              </div>
+              <div>
+                <div style="color: #999; margin-bottom: 2px;">Koordinat</div>
+                <div style="color: #191919; font-weight: 600;">3°51'N, 108°23'E</div>
+              </div>
+            </div>
+          </div>
+        </div>`, {
+          maxWidth: 250
+        })
+        .addTo(detailMap);
+
+      // Open popup by default
+      mainMarker.openPopup();
+
+      // Fit bounds to show all features
+      const group = L.featureGroup([areaPolygon, mainMarker]);
+      detailMap.fitBounds(group.getBounds().pad(0.2));
     }
     
     // Screen Navigation
