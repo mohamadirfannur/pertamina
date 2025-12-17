@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLTS Site Intelligence - Pertamina NRE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* GeoDashboard Dark Mode Colors */
+      --black: #000000;
+      --gray-950: #161514;
+      --gray-900: #191919;
+      --gray-800: #232221;
+      --gray-750: #2B2B2B;
+      --gray-700: #353432;
+      --gray-600: #4F4C4A;
+      --gray-500: #777574;
+      --gray-400: #B4B2AF;
+      --gray-300: #C3C3BF;
+      --gray-200: #E2E1DF;
+      --gray-100: #F4F3F1;
+      --gray-50: #F9F8F7;
+      --white: #FFFFFF;
+      
+      /* Brand */
+      --brand-50: #FEF9EF;
+      --brand-100: #FCE6C5;
+      --brand-200: #FACE9B;
+      --brand-300: #F8B271;
+      --brand-400: #F59047;
+      --brand-500: #F36A1D;
+      --brand-600: #CD541B;
+      --brand-700: #A84118;
+      --brand-800: #703D27;
+      --brand-900: #632D1F;
+      --brand-warm: #FFEFD7;
+      
+      /* Semantic */
+      --green-50: #defbe6;
+      --green-60: #198038;
+      --green-70: #0e6027;
+      --yellow-30: #f1c21b;
+      --yellow-50: #b28600;
+      --red-50: #fa4d56;
+      --red-60: #da1e28;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      
+      /* Border Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-900);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--gray-800);
+      border-right: 1px solid var(--gray-700);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      z-index: 100;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--brand-500), var(--brand-600));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--white);
+    }
+    
+    .logo-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    
+    .logo-subtitle {
+      font-size: 10px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      overflow-y: auto;
+    }
+    
+    .nav-section {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray-500);
+      padding: var(--space-sm) var(--space-md);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--gray-400);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .nav-item:hover {
+      background: var(--gray-750);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--brand-500);
+      color: var(--white);
+    }
+    
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.8;
+    }
+    
+    .nav-item.active svg {
+      opacity: 1;
+    }
+    
+    .nav-badge {
+      background: var(--brand-500);
+      color: var(--white);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-left: auto;
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-md);
+      border-top: 1px solid var(--gray-700);
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-sm);
+    }
+    
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-400), var(--brand-600));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .user-info {
+      flex: 1;
+    }
+    
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    
+    .user-role {
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header */
+    .header {
+      height: 64px;
+      background: var(--gray-800);
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+    
+    .breadcrumb-item {
+      color: var(--gray-400);
+    }
+    
+    .breadcrumb-item.active {
+      color: var(--white);
+      font-weight: 500;
+    }
+    
+    .breadcrumb-separator {
+      color: var(--gray-600);
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      width: 280px;
+    }
+    
+    .search-box input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 13px;
+      flex: 1;
+    }
+    
+    .search-box input::placeholder {
+      color: var(--gray-500);
+    }
+    
+    .search-box svg {
+      width: 16px;
+      height: 16px;
+      color: var(--gray-500);
+    }
+    
+    .header-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--gray-400);
+    }
+    
+    .header-btn:hover {
+      background: var(--gray-700);
+      color: var(--white);
+    }
+    
+    .header-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* Page Container */
+    .page-container {
+      flex: 1;
+      padding: var(--space-xl);
+      overflow-y: auto;
+    }
+    
+    .page-header {
+      margin-bottom: var(--space-xl);
+    }
+    
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+    
+    /* Cards */
+    .card {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    
+    .card-body {
+      padding: var(--space-lg);
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .stat-card {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    
+    .stat-card.orange::before { background: var(--brand-500); }
+    .stat-card.green::before { background: var(--green-60); }
+    .stat-card.yellow::before { background: var(--yellow-30); }
+    .stat-card.red::before { background: var(--red-50); }
+    
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-md);
+    }
+    
+    .stat-card.orange .stat-icon { background: rgba(243, 106, 29, 0.15); color: var(--brand-500); }
+    .stat-card.green .stat-icon { background: rgba(25, 128, 56, 0.15); color: var(--green-60); }
+    .stat-card.yellow .stat-icon { background: rgba(241, 194, 27, 0.15); color: var(--yellow-30); }
+    .stat-card.red .stat-icon { background: rgba(250, 77, 86, 0.15); color: var(--red-50); }
+    
+    .stat-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+    
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-size: 12px;
+      margin-top: var(--space-sm);
+    }
+    
+    .stat-trend.up { color: var(--green-60); }
+    .stat-trend.down { color: var(--red-50); }
+    
+    /* Map Container */
+    .map-section {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .map-container {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-lg);
+      height: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .map-placeholder {
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(25, 25, 25, 0.7), rgba(25, 25, 25, 0.7)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23232221" width="100" height="100"/><path d="M0 50 Q25 30 50 50 T100 50" stroke="%23353432" fill="none" stroke-width="0.5"/><path d="M0 60 Q25 40 50 60 T100 60" stroke="%23353432" fill="none" stroke-width="0.5"/><path d="M0 70 Q25 50 50 70 T100 70" stroke="%23353432" fill="none" stroke-width="0.5"/></svg>');
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .map-overlay {
+      position: absolute;
+      top: var(--space-md);
+      left: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    
+    .map-control {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--gray-400);
+    }
+    
+    .map-control:hover {
+      background: var(--gray-750);
+      color: var(--white);
+    }
+    
+    .map-control.active {
+      background: var(--brand-500);
+      border-color: var(--brand-500);
+      color: var(--white);
+    }
+    
+    .map-control svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .map-legend {
+      position: absolute;
+      bottom: var(--space-md);
+      left: var(--space-md);
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+    }
+    
+    .legend-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--gray-500);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .legend-items {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 12px;
+      color: var(--gray-300);
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius-sm);
+    }
+    
+    .legend-color.high { background: var(--green-60); }
+    .legend-color.medium { background: var(--yellow-30); }
+    .legend-color.low { background: var(--red-50); }
+    
+    /* Analysis Panel */
+    .analysis-panel {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+    
+    .panel-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .panel-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .panel-subtitle {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+    
+    .panel-body {
+      flex: 1;
+      padding: var(--space-lg);
+      overflow-y: auto;
+    }
+    
+    /* Form Elements */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-400);
+      margin-bottom: var(--space-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: var(--space-md);
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23777574" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    
+    .form-select:focus {
+      outline: none;
+      border-color: var(--brand-500);
+    }
+    
+    .form-select option {
+      background: var(--gray-800);
+      color: var(--white);
+    }
+    
+    /* Parameter List */
+    .parameter-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    
+    .parameter-item {
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .parameter-item:hover {
+      border-color: var(--gray-600);
+    }
+    
+    .parameter-item.selected {
+      border-color: var(--brand-500);
+      background: rgba(243, 106, 29, 0.1);
+    }
+    
+    .parameter-checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--gray-600);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .parameter-item.selected .parameter-checkbox {
+      background: var(--brand-500);
+      border-color: var(--brand-500);
+    }
+    
+    .parameter-checkbox svg {
+      width: 12px;
+      height: 12px;
+      color: var(--white);
+      opacity: 0;
+    }
+    
+    .parameter-item.selected .parameter-checkbox svg {
+      opacity: 1;
+    }
+    
+    .parameter-info {
+      flex: 1;
+    }
+    
+    .parameter-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    
+    .parameter-source {
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+    
+    .parameter-weight {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .weight-input {
+      width: 50px;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--gray-700);
+      border: 1px solid var(--gray-600);
+      border-radius: var(--radius-sm);
+      color: var(--white);
+      font-size: 13px;
+      text-align: center;
+      font-family: inherit;
+    }
+    
+    .weight-input:focus {
+      outline: none;
+      border-color: var(--brand-500);
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-lg);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: var(--brand-500);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background: var(--brand-600);
+    }
+    
+    .btn-secondary {
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      color: var(--white);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--gray-700);
+    }
+    
+    .btn-ghost {
+      background: transparent;
+      color: var(--brand-500);
+    }
+    
+    .btn-ghost:hover {
+      background: rgba(243, 106, 29, 0.1);
+    }
+    
+    .btn-block {
+      width: 100%;
+    }
+    
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* Result Cards */
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    
+    .result-card {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .result-card:hover {
+      border-color: var(--brand-500);
+      transform: translateY(-2px);
+    }
+    
+    .result-card.recommended {
+      border-color: var(--green-60);
+    }
+    
+    .result-card.recommended::before {
+      content: 'Rekomendasi';
+      display: block;
+      background: var(--green-60);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: var(--space-xs) var(--space-md);
+      text-align: center;
+    }
+    
+    .result-map-preview {
+      height: 120px;
+      background: var(--gray-750);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .result-score-badge {
+      position: absolute;
+      top: var(--space-sm);
+      right: var(--space-sm);
+      background: var(--gray-800);
+      border-radius: var(--radius-md);
+      padding: var(--space-xs) var(--space-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .score-value {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    
+    .score-value.high { color: var(--green-60); }
+    .score-value.medium { color: var(--yellow-30); }
+    .score-value.low { color: var(--red-50); }
+    
+    .result-content {
+      padding: var(--space-lg);
+    }
+    
+    .result-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .result-location {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-bottom: var(--space-md);
+    }
+    
+    .result-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+    }
+    
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+    .metric-label {
+      font-size: 10px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .metric-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    
+    /* Progress Steps */
+    .steps-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+      padding: var(--space-lg) 0;
+    }
+    
+    .step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gray-750);
+      border: 2px solid var(--gray-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-500);
+      transition: all 0.3s ease;
+    }
+    
+    .step.active .step-number {
+      background: var(--brand-500);
+      border-color: var(--brand-500);
+      color: var(--white);
+    }
+    
+    .step.completed .step-number {
+      background: var(--green-60);
+      border-color: var(--green-60);
+      color: var(--white);
+    }
+    
+    .step-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+    
+    .step.active .step-label,
+    .step.completed .step-label {
+      color: var(--white);
+    }
+    
+    .step-connector {
+      width: 60px;
+      height: 2px;
+      background: var(--gray-700);
+    }
+    
+    .step-connector.completed {
+      background: var(--green-60);
+    }
+    
+    /* Scoring Bars */
+    .score-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    
+    .score-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .score-name {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+    
+    .score-percent {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    
+    .score-bar {
+      height: 6px;
+      background: var(--gray-700);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .score-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+    
+    .score-fill.high { background: var(--green-60); }
+    .score-fill.medium { background: var(--yellow-30); }
+    .score-fill.low { background: var(--red-50); }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.3s ease forwards;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--gray-700);
+      border-top-color: var(--brand-500);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    /* Screen Visibility */
+    .screen {
+      display: none;
+    }
+    
+    .screen.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      gap: var(--space-xs);
+      background: var(--gray-750);
+      padding: var(--space-xs);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .tab-btn {
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-400);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .tab-btn:hover {
+      color: var(--white);
+    }
+    
+    .tab-btn.active {
+      background: var(--gray-800);
+      color: var(--white);
+    }
+    
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .data-table th,
+    .data-table td {
+      padding: var(--space-md);
+      text-align: left;
+      border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .data-table th {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .data-table td {
+      font-size: 13px;
+      color: var(--gray-300);
+    }
+    
+    .data-table tr:hover td {
+      background: var(--gray-750);
+    }
+    
+    /* Status Badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .status-badge.success {
+      background: rgba(25, 128, 56, 0.2);
+      color: var(--green-60);
+    }
+    
+    .status-badge.warning {
+      background: rgba(241, 194, 27, 0.2);
+      color: var(--yellow-30);
+    }
+    
+    .status-badge.danger {
+      background: rgba(250, 77, 86, 0.2);
+      color: var(--red-50);
+    }
+    
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+    }
+    
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-900);
+      color: var(--white);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2xl);
+      text-align: center;
+    }
+    
+    .empty-state svg {
+      width: 64px;
+      height: 64px;
+      color: var(--gray-600);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .empty-state-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .empty-state-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      max-width: 300px;
+    }
+    
+    /* Processing Animation */
+    .processing-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      gap: var(--space-lg);
+    }
+    
+    .processing-ring {
+      width: 80px;
+      height: 80px;
+      border: 4px solid var(--gray-700);
+      border-top-color: var(--brand-500);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    .processing-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--white);
+    }
+    
+    .processing-sub {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+    
+    /* Slider */
+    .weight-slider {
+      width: 80px;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--gray-700);
+      border-radius: 2px;
+      outline: none;
+    }
+    
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--brand-500);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 1200px) {
+      .map-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .analysis-panel {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="logo-text">PLTS Intelligence</div>
+            <div class="logo-subtitle">Pertamina NRE</div>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main Menu</div>
+          <div class="nav-item active" onclick="showScreen('dashboard')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Dashboard
+          </div>
+          <div class="nav-item" onclick="showScreen('analysis')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            Analisis Baru
+            <span class="nav-badge">New</span>
+          </div>
+          <div class="nav-item" onclick="showScreen('results')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            Hasil Kajian
+          </div>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Data</div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+            Dataset
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+            </svg>
+            Layer Peta
+          </div>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Settings</div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+            </svg>
+            Pengaturan
+          </div>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">IP</div>
+          <div class="user-info">
+            <div class="user-name">Ipang</div>
+            <div class="user-role">Analyst</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="breadcrumb">
+            <span class="breadcrumb-item">PLTS Intelligence</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active" id="breadcrumb-current">Dashboard</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="text" placeholder="Cari lokasi, parameter...">
+          </div>
+          <button class="header-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+          </button>
+          <button class="header-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="19" cy="12" r="1"/>
+              <circle cx="5" cy="12" r="1"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+      
+      <!-- Page Container -->
+      <div class="page-container">
+        
+        <!-- Dashboard Screen -->
+        <div class="screen active" id="screen-dashboard">
+          <div class="page-header">
+            <h1 class="page-title">Dashboard Overview</h1>
+            <p class="page-subtitle">Ringkasan analisis penentuan lokasi PLTS kawasan 3T</p>
+          </div>
+          
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card orange">
+              <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div class="stat-value">127</div>
+              <div class="stat-label">Kawasan 3T Teranalisis</div>
+              <div class="stat-trend up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 15l-6-6-6 6"/>
+                </svg>
+                +12% dari bulan lalu
+              </div>
+            </div>
+            
+            <div class="stat-card green">
+              <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <div class="stat-value">34</div>
+              <div class="stat-label">Lokasi Potensial</div>
+              <div class="stat-trend up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 15l-6-6-6 6"/>
+                </svg>
+                +8% dari bulan lalu
+              </div>
+            </div>
+            
+            <div class="stat-card yellow">
+              <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                  <circle cx="12" cy="12" r="4"/>
+                </svg>
+              </div>
+              <div class="stat-value">1,847</div>
+              <div class="stat-label">Avg. GHI (kWh/m²)</div>
+              <div class="stat-trend up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 15l-6-6-6 6"/>
+                </svg>
+                Optimal
+              </div>
+            </div>
+            
+            <div class="stat-card red">
+              <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+              </div>
+              <div class="stat-value">18</div>
+              <div class="stat-label">High Risk Area</div>
+              <div class="stat-trend down">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+                -5% dari bulan lalu
+              </div>
+            </div>
+          </div>
+          
+          <!-- Map Section -->
+          <div class="map-section">
+            <div class="map-container">
+              <div class="map-placeholder">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gray-600)" stroke-width="1">
+                  <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                </svg>
+              </div>
+              
+              <div class="map-overlay">
+                <button class="map-control active" title="Layers">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                </button>
+                <button class="map-control" title="Draw">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                  </svg>
+                </button>
+                <button class="map-control" title="Measure">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 12h20M12 2v20M17 7l-5 5-5-5"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="map-legend">
+                <div class="legend-title">Skor Kesesuaian</div>
+                <div class="legend-items">
+                  <div class="legend-item">
+                    <div class="legend-color high"></div>
+                    <span>Tinggi (>75)</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color medium"></div>
+                    <span>Sedang (50-75)</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color low"></div>
+                    <span>Rendah (<50)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Quick Analysis Panel -->
+            <div class="analysis-panel">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Quick Analysis</div>
+                  <div class="panel-subtitle">Mulai analisis lokasi baru</div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label class="form-label">Provinsi</label>
+                  <select class="form-select" id="quick-province">
+                    <option value="">Pilih Provinsi...</option>
+                    <option value="kepri">Kepulauan Riau</option>
+                    <option value="kaltara">Kalimantan Utara</option>
+                    <option value="ntb">Nusa Tenggara Barat</option>
+                    <option value="ntt">Nusa Tenggara Timur</option>
+                    <option value="maluku">Maluku</option>
+                    <option value="papua">Papua</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Kabupaten/Kota</label>
+                  <select class="form-select" id="quick-regency">
+                    <option value="">Pilih Kabupaten...</option>
+                    <option value="natuna">Kabupaten Natuna</option>
+                    <option value="anambas">Kabupaten Anambas</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Preset Parameter</label>
+                  <select class="form-select">
+                    <option value="default">Default (9 Parameter)</option>
+                    <option value="energy">Fokus Energi</option>
+                    <option value="environment">Fokus Lingkungan</option>
+                    <option value="economic">Fokus Ekonomi</option>
+                  </select>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="showScreen('analysis')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                  Mulai Analisis
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Analysis -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Analisis Terbaru</div>
+              <button class="btn btn-ghost">Lihat Semua</button>
+            </div>
+            <div class="card-body" style="padding: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Lokasi</th>
+                    <th>Provinsi</th>
+                    <th>Skor</th>
+                    <th>Status</th>
+                    <th>Tanggal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color: var(--white)">Kec. Bunguran Timur</strong></td>
+                    <td>Kepulauan Riau</td>
+                    <td><span class="score-value high">87.5</span></td>
+                    <td><span class="status-badge success">Rekomendasi</span></td>
+                    <td>17 Des 2025</td>
+                    <td><button class="btn btn-ghost" style="padding: 4px 8px;">Detail</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--white)">Kec. Midai</strong></td>
+                    <td>Kepulauan Riau</td>
+                    <td><span class="score-value high">82.3</span></td>
+                    <td><span class="status-badge success">Rekomendasi</span></td>
+                    <td>16 Des 2025</td>
+                    <td><button class="btn btn-ghost" style="padding: 4px 8px;">Detail</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--white)">Kec. Pulau Laut</strong></td>
+                    <td>Kepulauan Riau</td>
+                    <td><span class="score-value medium">68.9</span></td>
+                    <td><span class="status-badge warning">Review</span></td>
+                    <td>15 Des 2025</td>
+                    <td><button class="btn btn-ghost" style="padding: 4px 8px;">Detail</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--white)">Kec. Serasan</strong></td>
+                    <td>Kepulauan Riau</td>
+                    <td><span class="score-value low">45.2</span></td>
+                    <td><span class="status-badge danger">Tidak Layak</span></td>
+                    <td>14 Des 2025</td>
+                    <td><button class="btn btn-ghost" style="padding: 4px 8px;">Detail</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Analysis Screen -->
+        <div class="screen" id="screen-analysis">
+          <div class="page-header">
+            <h1 class="page-title">Analisis Lokasi PLTS</h1>
+            <p class="page-subtitle">Konfigurasi parameter dan jalankan analisis kesesuaian lahan</p>
+          </div>
+          
+          <!-- Progress Steps -->
+          <div class="steps-container">
+            <div class="step active" id="step-1">
+              <div class="step-number">1</div>
+              <div class="step-label">Pilih Wilayah</div>
+            </div>
+            <div class="step-connector" id="connector-1"></div>
+            <div class="step" id="step-2">
+              <div class="step-number">2</div>
+              <div class="step-label">Set Parameter</div>
+            </div>
+            <div class="step-connector" id="connector-2"></div>
+            <div class="step" id="step-3">
+              <div class="step-number">3</div>
+              <div class="step-label">Proses Analisis</div>
+            </div>
+            <div class="step-connector" id="connector-3"></div>
+            <div class="step" id="step-4">
+              <div class="step-number">4</div>
+              <div class="step-label">Hasil</div>
+            </div>
+          </div>
+          
+          <!-- Step 1: Region Selection -->
+          <div class="card" id="analysis-step-1">
+            <div class="card-header">
+              <div class="card-title">Pilih Wilayah Analisis</div>
+            </div>
+            <div class="card-body">
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+                <div class="form-group">
+                  <label class="form-label">Provinsi</label>
+                  <select class="form-select" id="province-select" onchange="updateRegency()">
+                    <option value="">Pilih Provinsi...</option>
+                    <option value="kepri">Kepulauan Riau</option>
+                    <option value="kaltara">Kalimantan Utara</option>
+                    <option value="ntb">Nusa Tenggara Barat</option>
+                    <option value="ntt">Nusa Tenggara Timur</option>
+                    <option value="maluku">Maluku</option>
+                    <option value="papua">Papua</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Kabupaten/Kota</label>
+                  <select class="form-select" id="regency-select" onchange="updateDistrict()">
+                    <option value="">Pilih Kabupaten...</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Kecamatan (Opsional)</label>
+                  <select class="form-select" id="district-select">
+                    <option value="">Semua Kecamatan</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div style="display: flex; justify-content: flex-end; margin-top: var(--space-lg);">
+                <button class="btn btn-primary" onclick="goToStep(2)">
+                  Lanjut ke Parameter
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 2: Parameter Configuration -->
+          <div class="card" id="analysis-step-2" style="display: none;">
+            <div class="card-header">
+              <div class="card-title">Konfigurasi Parameter Analisis</div>
+              <div style="display: flex; gap: var(--space-sm);">
+                <button class="btn btn-ghost" onclick="selectAllParams()">Pilih Semua</button>
+                <button class="btn btn-ghost" onclick="resetWeights()">Reset Bobot</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="parameter-list" id="parameter-list">
+                <!-- Parameters will be populated by JS -->
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; margin-top: var(--space-xl);">
+                <button class="btn btn-secondary" onclick="goToStep(1)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                  </svg>
+                  Kembali
+                </button>
+                <button class="btn btn-primary" onclick="runAnalysis()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                  Jalankan Analisis
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3: Processing -->
+          <div class="card" id="analysis-step-3" style="display: none;">
+            <div class="card-body">
+              <div class="processing-container">
+                <div class="processing-ring"></div>
+                <div class="processing-text">Memproses Analisis...</div>
+                <div class="processing-sub" id="processing-status">Mengumpulkan data spasial...</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 4: Results -->
+          <div id="analysis-step-4" style="display: none;">
+            <div class="card" style="margin-bottom: var(--space-lg);">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Hasil Analisis - Kabupaten Natuna</div>
+                  <div style="font-size: 12px; color: var(--gray-500); margin-top: 4px;">9 parameter dianalisis • 15 kecamatan</div>
+                </div>
+                <div style="display: flex; gap: var(--space-sm);">
+                  <button class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Export PDF
+                  </button>
+                  <button class="btn btn-primary" onclick="showScreen('results')">
+                    Lihat Detail
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="result-grid">
+              <!-- Result Card 1 - Recommended -->
+              <div class="result-card recommended" onclick="showScreen('results')">
+                <div class="result-map-preview">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="1">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <div class="result-score-badge">
+                    <span class="score-value high">87.5</span>
+                  </div>
+                </div>
+                <div class="result-content">
+                  <div class="result-title">Kec. Bunguran Timur</div>
+                  <div class="result-location">Kabupaten Natuna, Kepulauan Riau</div>
+                  <div class="result-metrics">
+                    <div class="metric-item">
+                      <span class="metric-label">GHI</span>
+                      <span class="metric-value">1,892 kWh/m²</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Luas Potensial</span>
+                      <span class="metric-value">245 Ha</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Risiko Bencana</span>
+                      <span class="metric-value" style="color: var(--green-60)">Rendah</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Akses Grid</span>
+                      <span class="metric-value">3.2 km</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Result Card 2 -->
+              <div class="result-card">
+                <div class="result-map-preview">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="1">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <div class="result-score-badge">
+                    <span class="score-value high">82.3</span>
+                  </div>
+                </div>
+                <div class="result-content">
+                  <div class="result-title">Kec. Midai</div>
+                  <div class="result-location">Kabupaten Natuna, Kepulauan Riau</div>
+                  <div class="result-metrics">
+                    <div class="metric-item">
+                      <span class="metric-label">GHI</span>
+                      <span class="metric-value">1,856 kWh/m²</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Luas Potensial</span>
+                      <span class="metric-value">189 Ha</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Risiko Bencana</span>
+                      <span class="metric-value" style="color: var(--green-60)">Rendah</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Akses Grid</span>
+                      <span class="metric-value">5.1 km</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Result Card 3 -->
+              <div class="result-card">
+                <div class="result-map-preview">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="1">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <div class="result-score-badge">
+                    <span class="score-value medium">68.9</span>
+                  </div>
+                </div>
+                <div class="result-content">
+                  <div class="result-title">Kec. Pulau Laut</div>
+                  <div class="result-location">Kabupaten Natuna, Kepulauan Riau</div>
+                  <div class="result-metrics">
+                    <div class="metric-item">
+                      <span class="metric-label">GHI</span>
+                      <span class="metric-value">1,721 kWh/m²</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Luas Potensial</span>
+                      <span class="metric-value">156 Ha</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Risiko Bencana</span>
+                      <span class="metric-value" style="color: var(--yellow-30)">Sedang</span>
+                    </div>
+                    <div class="metric-item">
+                      <span class="metric-label">Akses Grid</span>
+                      <span class="metric-value">8.7 km</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: flex; justify-content: center; margin-top: var(--space-xl);">
+              <button class="btn btn-secondary" onclick="goToStep(1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+                Analisis Baru
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Results Detail Screen -->
+        <div class="screen" id="screen-results">
+          <div class="page-header">
+            <h1 class="page-title">Detail Rekomendasi Lokasi</h1>
+            <p class="page-subtitle">Kec. Bunguran Timur, Kabupaten Natuna</p>
+          </div>
+          
+          <div class="map-section">
+            <div class="map-container" style="height: 600px;">
+              <div class="map-placeholder">
+                <div style="text-align: center;">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--brand-500)" stroke-width="1.5">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <div style="margin-top: var(--space-md); color: var(--gray-400); font-size: 14px;">
+                    Kec. Bunguran Timur
+                  </div>
+                  <div style="color: var(--gray-500); font-size: 12px;">
+                    3°51'N, 108°23'E
+                  </div>
+                </div>
+              </div>
+              
+              <div class="map-overlay">
+                <button class="map-control active">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                </button>
+                <button class="map-control">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="map-legend">
+                <div class="legend-title">Layer Aktif</div>
+                <div class="legend-items">
+                  <div class="legend-item">
+                    <div class="legend-color" style="background: var(--brand-500);"></div>
+                    <span>Area Potensial</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color" style="background: var(--gray-500);"></div>
+                    <span>Batas Kecamatan</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-color" style="background: var(--yellow-30);"></div>
+                    <span>Jaringan Listrik</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Detail Panel -->
+            <div class="analysis-panel" style="height: 600px;">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">Skor Kesesuaian</div>
+                  <div class="panel-subtitle">Breakdown per parameter</div>
+                </div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--green-60);">87.5</div>
+              </div>
+              <div class="panel-body">
+                <div class="score-breakdown">
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Iradiasi Matahari (GHI)</span>
+                      <span class="score-percent">95%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 95%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Daya Dukung Lingkungan</span>
+                      <span class="score-percent">88%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 88%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Kesesuaian Tata Ruang</span>
+                      <span class="score-percent">92%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 92%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Aksesibilitas</span>
+                      <span class="score-percent">85%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 85%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Risiko Bencana</span>
+                      <span class="score-percent">90%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 90%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Geoteknik & Tanah</span>
+                      <span class="score-percent">82%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 82%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Nilai Lahan</span>
+                      <span class="score-percent">78%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 78%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Hidrologi</span>
+                      <span class="score-percent">88%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill high" style="width: 88%;"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="score-item">
+                    <div class="score-header">
+                      <span class="score-name">Sosial & Ekonomi</span>
+                      <span class="score-percent">72%</span>
+                    </div>
+                    <div class="score-bar">
+                      <div class="score-fill medium" style="width: 72%;"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div style="margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid var(--gray-700);">
+                  <div style="font-size: 12px; color: var(--gray-500); margin-bottom: var(--space-md);">RINGKASAN</div>
+                  <p style="font-size: 13px; color: var(--gray-300); line-height: 1.6;">
+                    Lokasi ini memiliki potensi tinggi untuk pembangunan PLTS dengan iradiasi matahari optimal (GHI 1,892 kWh/m²), risiko bencana rendah, dan aksesibilitas baik ke jaringan listrik existing (3.2 km). Perlu perhatian pada aspek sosial-ekonomi untuk engagement masyarakat lokal.
+                  </p>
+                </div>
+                
+                <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-lg);">
+                  <button class="btn btn-primary btn-block">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Download Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Info Cards -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); margin-top: var(--space-lg);">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Estimasi Kapasitas</div>
+              </div>
+              <div class="card-body">
+                <div style="font-size: 32px; font-weight: 700; color: var(--brand-500); margin-bottom: var(--space-sm);">
+                  12.5 <span style="font-size: 16px; color: var(--gray-400);">MWp</span>
+                </div>
+                <div style="font-size: 13px; color: var(--gray-500);">
+                  Berdasarkan luas potensial 245 Ha dengan efisiensi panel 20%
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Estimasi Investasi</div>
+              </div>
+              <div class="card-body">
+                <div style="font-size: 32px; font-weight: 700; color: var(--brand-500); margin-bottom: var(--space-sm);">
+                  187.5 <span style="font-size: 16px; color: var(--gray-400);">M USD</span>
+                </div>
+                <div style="font-size: 13px; color: var(--gray-500);">
+                  Estimasi biaya CAPEX @ $15M/MWp termasuk infrastruktur
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Produksi Energi Tahunan</div>
+              </div>
+              <div class="card-body">
+                <div style="font-size: 32px; font-weight: 700; color: var(--brand-500); margin-bottom: var(--space-sm);">
+                  23.6 <span style="font-size: 16px; color: var(--gray-400);">GWh/tahun</span>
+                </div>
+                <div style="font-size: 13px; color: var(--gray-500);">
+                  Capacity factor 21.5% berdasarkan data GHI lokal
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    // Data
+    const parameters = [
+      { id: 'ghi', name: 'Iradiasi Matahari (GHI/DNI/DHI)', source: 'Global Solar Atlas', weight: 15, selected: true },
+      { id: 'env', name: 'Daya Dukung & Daya Tampung Lingkungan', source: 'KLHS, PP 26/2008', weight: 12, selected: true },
+      { id: 'rtrw', name: 'Kesesuaian Tata Ruang (RTRW/RDTR)', source: 'ATR/BPN', weight: 12, selected: true },
+      { id: 'access', name: 'Aksesibilitas & Infrastruktur', source: 'Bappenas & OSM', weight: 10, selected: true },
+      { id: 'disaster', name: 'Risiko Bencana', source: 'InaRISK, SNI 1726', weight: 12, selected: true },
+      { id: 'geo', name: 'Geoteknik & Daya Dukung Tanah', source: 'SNI 8460', weight: 10, selected: true },
+      { id: 'land', name: 'Nilai Lahan & ZNT', source: 'ATR/BPN Bhumi', weight: 8, selected: true },
+      { id: 'hydro', name: 'Hidrologi & Risiko Banjir', source: 'InaRISK', weight: 10, selected: true },
+      { id: 'social', name: 'Sosial & Ekonomi', source: 'IOH, SOP AMDAL', weight: 8, selected: true },
+      { id: 'grid', name: 'Jaringan Energi Eksisting', source: 'PLN, Bappenas', weight: 8, selected: false },
+      { id: 'demography', name: 'Data Demografi', source: 'IOH SHP Demoses', weight: 5, selected: false },
+      { id: 'poi', name: 'Point of Interest (Unit Usaha)', source: 'Internal Braga', weight: 5, selected: false },
+    ];
+    
+    const regencies = {
+      'kepri': [
+        { value: 'natuna', label: 'Kabupaten Natuna' },
+        { value: 'anambas', label: 'Kabupaten Anambas' },
+        { value: 'lingga', label: 'Kabupaten Lingga' },
+      ],
+      'kaltara': [
+        { value: 'nunukan', label: 'Kabupaten Nunukan' },
+        { value: 'malinau', label: 'Kabupaten Malinau' },
+      ],
+      'ntt': [
+        { value: 'sumba', label: 'Kabupaten Sumba Barat' },
+        { value: 'rote', label: 'Kabupaten Rote Ndao' },
+      ]
+    };
+    
+    const districts = {
+      'natuna': [
+        { value: 'bunguran-timur', label: 'Bunguran Timur' },
+        { value: 'bunguran-barat', label: 'Bunguran Barat' },
+        { value: 'midai', label: 'Midai' },
+        { value: 'pulau-laut', label: 'Pulau Laut' },
+        { value: 'serasan', label: 'Serasan' },
+        { value: 'subi', label: 'Subi' },
+      ]
+    };
+    
+    let currentStep = 1;
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      renderParameters();
+    });
+    
+    // Screen Navigation
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + screenId).classList.add('active');
+      
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      event.target.closest('.nav-item')?.classList.add('active');
+      
+      const breadcrumbMap = {
+        'dashboard': 'Dashboard',
+        'analysis': 'Analisis Baru',
+        'results': 'Hasil Kajian'
+      };
+      document.getElementById('breadcrumb-current').textContent = breadcrumbMap[screenId] || 'Dashboard';
+      
+      if (screenId === 'analysis') {
+        resetAnalysis();
+      }
+    }
+    
+    // Step Navigation
+    function goToStep(step) {
+      currentStep = step;
+      
+      // Update step indicators
+      for (let i = 1; i <= 4; i++) {
+        const stepEl = document.getElementById('step-' + i);
+        const connectorEl = document.getElementById('connector-' + (i - 1));
+        
+        stepEl.classList.remove('active', 'completed');
+        if (i < step) {
+          stepEl.classList.add('completed');
+        } else if (i === step) {
+          stepEl.classList.add('active');
+        }
+        
+        if (connectorEl) {
+          connectorEl.classList.toggle('completed', i < step);
+        }
+      }
+      
+      // Show/hide step content
+      for (let i = 1; i <= 4; i++) {
+        const stepContent = document.getElementById('analysis-step-' + i);
+        if (stepContent) {
+          stepContent.style.display = i === step ? 'block' : 'none';
+        }
+      }
+    }
+    
+    function resetAnalysis() {
+      currentStep = 1;
+      goToStep(1);
+    }
+    
+    // Region Selectors
+    function updateRegency() {
+      const province = document.getElementById('province-select').value;
+      const regencySelect = document.getElementById('regency-select');
+      const districtSelect = document.getElementById('district-select');
+      
+      regencySelect.innerHTML = '<option value="">Pilih Kabupaten...</option>';
+      districtSelect.innerHTML = '<option value="">Semua Kecamatan</option>';
+      
+      if (regencies[province]) {
+        regencies[province].forEach(r => {
+          regencySelect.innerHTML += `<option value="${r.value}">${r.label}</option>`;
+        });
+      }
+    }
+    
+    function updateDistrict() {
+      const regency = document.getElementById('regency-select').value;
+      const districtSelect = document.getElementById('district-select');
+      
+      districtSelect.innerHTML = '<option value="">Semua Kecamatan</option>';
+      
+      if (districts[regency]) {
+        districts[regency].forEach(d => {
+          districtSelect.innerHTML += `<option value="${d.value}">${d.label}</option>`;
+        });
+      }
+    }
+    
+    // Parameters
+    function renderParameters() {
+      const container = document.getElementById('parameter-list');
+      container.innerHTML = parameters.map(p => `
+        <div class="parameter-item ${p.selected ? 'selected' : ''}" onclick="toggleParameter('${p.id}')">
+          <div class="parameter-checkbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <div class="parameter-info">
+            <div class="parameter-name">${p.name}</div>
+            <div class="parameter-source">Sumber: ${p.source}</div>
+          </div>
+          <div class="parameter-weight">
+            <input type="range" class="weight-slider" value="${p.weight}" min="1" max="20" 
+                   onclick="event.stopPropagation()" 
+                   onchange="updateWeight('${p.id}', this.value)">
+            <input type="text" class="weight-input" value="${p.weight}%" 
+                   onclick="event.stopPropagation()"
+                   onchange="updateWeightInput('${p.id}', this.value)">
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function toggleParameter(id) {
+      const param = parameters.find(p => p.id === id);
+      if (param) {
+        param.selected = !param.selected;
+        renderParameters();
+      }
+    }
+    
+    function updateWeight(id, value) {
+      const param = parameters.find(p => p.id === id);
+      if (param) {
+        param.weight = parseInt(value);
+        renderParameters();
+      }
+    }
+    
+    function updateWeightInput(id, value) {
+      const numValue = parseInt(value.replace('%', ''));
+      if (!isNaN(numValue) && numValue >= 1 && numValue <= 20) {
+        updateWeight(id, numValue);
+      }
+    }
+    
+    function selectAllParams() {
+      parameters.forEach(p => p.selected = true);
+      renderParameters();
+    }
+    
+    function resetWeights() {
+      const defaultWeight = Math.floor(100 / parameters.length);
+      parameters.forEach(p => p.weight = defaultWeight);
+      renderParameters();
+    }
+    
+    // Analysis
+    function runAnalysis() {
+      goToStep(3);
+      
+      const statuses = [
+        'Mengumpulkan data spasial...',
+        'Memproses layer iradiasi matahari...',
+        'Menganalisis daya dukung lingkungan...',
+        'Menghitung skor tata ruang...',
+        'Evaluasi risiko bencana...',
+        'Menghitung nilai lahan...',
+        'Finalisasi rekomendasi...'
+      ];
+      
+      let statusIndex = 0;
+      const statusEl = document.getElementById('processing-status');
+      
+      const interval = setInterval(() => {
+        statusIndex++;
+        if (statusIndex < statuses.length) {
+          statusEl.textContent = statuses[statusIndex];
+        } else {
+          clearInterval(interval);
+          goToStep(4);
+        }
+      }, 800);
+    }
+  </script>
+</body>
+</html>
