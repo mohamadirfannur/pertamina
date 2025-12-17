@@ -1359,12 +1359,15 @@
       </nav>
       
       <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="user-avatar">IP</div>
+        <div class="user-profile" style="cursor: pointer;" onclick="logout()">
+          <div class="user-avatar">AD</div>
           <div class="user-info">
-            <div class="user-name">Ipang</div>
-            <div class="user-role">Analyst</div>
+            <div class="user-name">Admin</div>
+            <div class="user-role">Administrator</div>
           </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; color: var(--gray-500);">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
         </div>
       </div>
     </aside>
@@ -2108,6 +2111,18 @@
   </div>
   
   <script>
+    // Check authentication
+    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+      window.location.href = 'index.html';
+    }
+
+    // Logout function
+    function logout() {
+      sessionStorage.removeItem('isAuthenticated');
+      sessionStorage.removeItem('userEmail');
+      window.location.href = 'index.html';
+    }
+
     // Data
     const parameters = [
       { id: 'ghi', name: 'Iradiasi Matahari (GHI/DNI/DHI)', source: 'Global Solar Atlas', weight: 15, selected: true },

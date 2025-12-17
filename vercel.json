@@ -2,11 +2,11 @@
   "routes": [
     {
       "src": "/",
-      "dest": "/pertamina-plts-dashboard.html"
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/pertamina-plts-dashboard.html"
+      "dest": "/$1"
     }
   ]
 }

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - PLTS Site Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* GeoDashboard Dark Mode Colors */
+      --black: #000000;
+      --gray-950: #161514;
+      --gray-900: #191919;
+      --gray-800: #232221;
+      --gray-750: #2B2B2B;
+      --gray-700: #353432;
+      --gray-600: #4F4C4A;
+      --gray-500: #777574;
+      --gray-400: #B4B2AF;
+      --gray-300: #C3C3BF;
+      --gray-200: #E2E1DF;
+      --gray-100: #F4F3F1;
+      --gray-50: #F9F8F7;
+      --white: #FFFFFF;
+
+      /* Brand */
+      --brand-50: #FEF9EF;
+      --brand-100: #FCE6C5;
+      --brand-200: #FACE9B;
+      --brand-300: #F8B271;
+      --brand-400: #F59047;
+      --brand-500: #F36A1D;
+      --brand-600: #CD541B;
+      --brand-700: #A84118;
+      --brand-800: #703D27;
+      --brand-900: #632D1F;
+      --brand-warm: #FFEFD7;
+
+      /* Semantic */
+      --green-50: #defbe6;
+      --green-60: #198038;
+      --green-70: #0e6027;
+      --red-50: #fa4d56;
+      --red-60: #da1e28;
+
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+
+      /* Border Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-900);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background Pattern */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(243, 106, 29, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(243, 106, 29, 0.08) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      padding: var(--space-xl);
+    }
+
+    .login-card {
+      background: var(--gray-800);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--brand-500), var(--brand-600));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .logo-icon svg {
+      width: 36px;
+      height: 36px;
+      fill: var(--white);
+    }
+
+    .logo-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+
+    .logo-subtitle {
+      font-size: 13px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .login-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-xs);
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-400);
+      margin-bottom: var(--space-sm);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--space-md);
+      background: var(--gray-750);
+      border: 1px solid var(--gray-700);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-500);
+      background: var(--gray-700);
+    }
+
+    .form-input::placeholder {
+      color: var(--gray-600);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: var(--space-md);
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--gray-500);
+      cursor: pointer;
+      padding: var(--space-xs);
+      display: flex;
+      align-items: center;
+      transition: color 0.2s ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--white);
+    }
+
+    .password-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .error-message {
+      background: rgba(250, 77, 86, 0.1);
+      border: 1px solid var(--red-50);
+      color: var(--red-50);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      margin-bottom: var(--space-lg);
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--brand-500);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+    }
+
+    .btn-login:hover {
+      background: var(--brand-600);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(243, 106, 29, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-login svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    .btn-login.loading .spinner {
+      display: block;
+    }
+
+    .btn-login.loading .btn-text {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: var(--space-xl);
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .footer-text a {
+      color: var(--brand-500);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-text a:hover {
+      color: var(--brand-400);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card {
+      animation: fadeIn 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="logo-title">PLTS Intelligence</div>
+        <div class="logo-subtitle">Pertamina NRE</div>
+      </div>
+
+      <div class="login-header">
+        <h1 class="login-title">Selamat Datang</h1>
+        <p class="login-subtitle">Masuk ke dashboard analisis PLTS</p>
+      </div>
+
+      <div class="error-message" id="errorMessage">
+        Email atau password salah. Silakan coba lagi.
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-input"
+            placeholder="nama@example.com"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="password-wrapper">
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Masukkan password"
+              required
+              autocomplete="current-password"
+            >
+            <button type="button" class="password-toggle" id="togglePassword">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span class="btn-text">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+            </svg>
+            Masuk
+          </span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+
+      <div class="footer-text">
+        &copy; 2025 Pertamina New & Renewable Energy
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Credentials
+    const CREDENTIALS = {
+      email: 'admin@example.com',
+      password: 'Admin4326'
+    };
+
+    // Elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', function() {
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+
+      if (type === 'text') {
+        eyeIcon.innerHTML = `
+          <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
+          <line x1="1" y1="1" x2="23" y2="23"/>
+        `;
+      } else {
+        eyeIcon.innerHTML = `
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        `;
+      }
+    });
+
+    // Handle form submission
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Hide error message
+      errorMessage.classList.remove('show');
+
+      // Get input values
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      // Show loading state
+      loginBtn.classList.add('loading');
+      loginBtn.disabled = true;
+
+      // Simulate authentication delay
+      setTimeout(() => {
+        if (email === CREDENTIALS.email && password === CREDENTIALS.password) {
+          // Success - redirect to dashboard
+          sessionStorage.setItem('isAuthenticated', 'true');
+          sessionStorage.setItem('userEmail', email);
+          window.location.href = 'pertamina-plts-dashboard.html';
+        } else {
+          // Failed - show error
+          loginBtn.classList.remove('loading');
+          loginBtn.disabled = false;
+          errorMessage.classList.add('show');
+          passwordInput.value = '';
+          passwordInput.focus();
+        }
+      }, 800);
+    });
+
+    // Check if already logged in
+    if (sessionStorage.getItem('isAuthenticated') === 'true') {
+      window.location.href = 'pertamina-plts-dashboard.html';
+    }
+  </script>
+</body>
+</html>
